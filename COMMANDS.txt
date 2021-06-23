@@ -1,0 +1,2 @@
+curl -s http://localhost:8080/dynamic # to use the dynamic client
+curl -s http://localhost:8080/typesafe # to use the typesafe client
