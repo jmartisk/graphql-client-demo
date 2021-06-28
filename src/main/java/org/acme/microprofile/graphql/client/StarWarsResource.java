@@ -45,48 +45,50 @@ import static io.smallrye.graphql.client.core.Operation.operation;
 @Path("/")
 public class StarWarsResource {
 
-    // example of typesafe client usage follows
+  // example of typesafe client usage follows
 
-    @Inject
-    StarWarsClientApi typesafeClient;
+  @Inject
+  StarWarsClientApi typesafeClient;
 
-    @GET
-    @Path("/typesafe")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Blocking
-    public List<Film> getAllFilmsUsingTypesafeClient() {
-        return typesafeClient.allFilms().getFilms();
-    }
+  @GET
+  @Path("/typesafe")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Blocking
+  public List<Film> getAllFilmsUsingTypesafeClient() {
+    return typesafeClient.allFilms().getFilms();
+  }
 
-    // example of dynamic client usage follows
+  // example of dynamic client usage follows
 
-    @Inject
-    @GraphQLClient("star-wars-dynamic")
-    DynamicGraphQLClient dynamicClient;
+  @Inject
+  @GraphQLClient("star-wars-dynamic")
+  DynamicGraphQLClient dynamicClient;
 
-    @GET
-    @Path("/dynamic")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Blocking
-    public List<Film> getAllFilmsUsingDynamicClient() throws Exception {
-        Document query = document(
-                operation(
-                        field("allFilms",
-                                field("films",
-                                        field("title"),
-                                        field("planetConnection",
-                                                field("planets",
-                                                        field("name")
-                                                )
-                                        )
-                                )
+  @GET
+  @Path("/dynamic")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Blocking
+  public List<Film> getAllFilmsUsingDynamicClient() throws Exception {
+    Document query = document(
+        operation(
+            field("allFilms",
+                field("films",
+                    field("title"),
+                    field("planetConnection",
+                        field("planets",
+                            field("name")
+//                         ,field("orbitalPeriod")
                         )
+                    )
                 )
-        );
-        Response response = dynamicClient.executeSync(query);
-        // Either work with the data as a JsonObject, or, as we show here,
-        // translate it into an instance of the corresponding model class
-        return response.getObject(FilmConnection.class, "allFilms").getFilms();
-    }
+            )
+        )
+    );
+    Response response = dynamicClient.executeSync(query);
+    // Either work with the data as a JsonObject, or, as we show here,
+    // translate it into an instance of the corresponding model class
+//        System.out.println(response.getData().asJsonObject());
+    return response.getObject(FilmConnection.class, "allFilms").getFilms();
+  }
 
 }

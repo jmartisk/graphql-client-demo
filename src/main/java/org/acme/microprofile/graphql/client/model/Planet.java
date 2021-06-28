@@ -11,4 +11,14 @@ public class Planet {
     public void setName(String name) {
         this.name = name;
     }
+/*
+    private Integer orbitalPeriod;
+
+    public Integer getOrbitalPeriod() {
+        return orbitalPeriod;
+    }
+
+    public void setOrbitalPeriod(Integer orbitalPeriod) {
+        this.orbitalPeriod = orbitalPeriod;
+    }*/
 }
